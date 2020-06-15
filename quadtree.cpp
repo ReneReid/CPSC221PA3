@@ -131,8 +131,8 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 PNG quadtree::render() {
         /* Your code here! */
-	// Created a recursive helper function, that takes node as its argument.
-	// this helper will go through the tree, pull pixel from those nodes that are = leaf
+	// Created a recursive helper function, that takes type node as its argument.
+	// this helper will go through the tree, and pull pixel from those nodes that are = leaf
 	// and continue drilling for those nodes that have children. 
 	// PNG is the return type for buildTreeImage. 
 
@@ -166,7 +166,7 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 		int startX = ul -> first;
 		int startY = ul -> second;
 
-		int endX = startX +  length; 
+		int endX = startX + length; 
 		int endY = startY + length;
 
 		for (int y = startY; y <= endY; y++) {
@@ -279,7 +279,7 @@ void quadtree::clear() {
 // recursively clears the node and its descendants; 
 }
 
-// made this originally to be a helper function, but thinking it through, it became the main 
+// I made this originally to be a helper function, but thinking it through, it became the main 
 // clear function. this is because clear needs to be recursive, and needs to be able to call 
 // on a specific node indicated in pruneTree. 
 void quadtree::clearNode(Node* node) {
