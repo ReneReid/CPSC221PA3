@@ -130,7 +130,7 @@ public:
     */
    PNG render();
 
-   vector<vector<RGBAPixel>> buildTreeVector(Node* currentNode); 
+   PNG buildTreeImage(Node* currentNode); 
 
 
    /*
@@ -174,8 +174,8 @@ private:
 
    Node* root; // ptr to the root of the quadtree
     int edge; // side length of the square image
-    vector<vector<RGBAPixel>> data;
-    PNG treeImage(length);
+    //vector<vector<RGBAPixel>> data;
+    //PNG treeImage(edge);
    
 
    /* =================== start of private PA3 functions ============== */
@@ -186,6 +186,9 @@ private:
     * You may want a recursive helper function for this one.
     */
    void clear();
+
+   // recursive helper function of clear(); 
+   void quadtree::clearNode(Node* node);
 
    /**
     * Complete for pa3
@@ -204,6 +207,8 @@ private:
     * @param dim reflects the size of the current square 
       */
    Node * buildTree(stats & s, pair<int,int> & ul , int dim);
+
+   void quadtree::pruneTree(int tol, Node* node);
 
     /* prunable is a pure virtual function, and as such it must
     * be implemented in a derived class. Prunable takes parameters

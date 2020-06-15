@@ -131,9 +131,9 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 PNG quadtree::render() {
         /* Your code here! */
-	// Created a recursive helper function, that takes node as its argument
-	// this helper will go through the tree, pull pixel from those nodes = leaf
-	// and continuing to drill for those nodes that have children. 
+	// Created a recursive helper function, that takes node as its argument.
+	// this helper will go through the tree, pull pixel from those nodes that are = leaf
+	// and continue drilling for those nodes that have children. 
 	// PNG is the return type for buildTreeImage. 
 
 	return buildTreeImage(root); 
@@ -151,7 +151,7 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	// step 1: create new square shaped PNG (blank canvas), of length and width edge == 2^dim.
 	// "edge" represents the maximum square can be extracted from the image. 
 
-	PNG quadPNG = new PNG(edge, edge); 
+	static PNG quadPNG = new PNG(edge, edge); 
 
 	// base case: the current node has no children;
 	// this means that we are at a leaf
@@ -169,9 +169,6 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 		int endX = startX +  length; 
 		int endY = startY + length;
 
-		// y is the outer loop
-		// x is the inner loop 
-
 		for (int y = startY; y <= endY; y++) {
 			for (int x = startX; x <= endX; x++) {
 
@@ -184,8 +181,8 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	}
 
 	// recursive case: current node has children; call renderTree on each child. 
-	// function will keep drilling down for such nodes. 
-	// note that if a node has children, it must have four of them 
+	// function will keep drilling down. 
+	// note that if a node has children, it has four of them.  
 	// i.e. either a node has no children or it has four. 
 
 	else {
@@ -200,11 +197,6 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 }
 
 
-
-
-
-
-
 int quadtree::idealPrune(int leaves){
         /* Your code here! */
 
@@ -214,19 +206,102 @@ int quadtree::pruneSize(int tol){
         /* Your code here! */
 
 }
-
+// this function uses a recursive helper function pruneTree. 
 void quadtree::prune(int tol){
         /* Your code here! */
 
-		// recursive function with helpers
-		// base case: variability  > tolerance. Keep node. Do not need to recurse up tree for parent
-		// recursive case: variability < tolerance. Clear node; move up to check parent. 
-		// need clear helper function 
+		// base case: variability  > tolerance. Keep node. 
+		// recursive case: variability < tolerance. clear descendants of node. 
+
+		return pruneTree(tol, root); 
 
 }
 
+// utilizes two helper functions: clear() and prunable 
+// prunable helper function needs to be implemented; require some TA direction as 
+// specifications are not clear to me. Made a piazza post on the topic. 
+void quadtree::pruneTree(int tol, Node* node) {
+
+	// determine whether the node even has children.... if it
+	// has no children (i.e. is a leaf), there is nothing that can be pruned.
+	// note that a node either has no children or has four children.  
+
+	if (node -> NW == NULL) {
+
+		return;
+	}
+
+	// base case is where node's variance <= tolerance. 
+	// in this case, prune the children off the node. No further drilling. 
+	// note: use prunable helper function for the conditional. 
+
+	if prunable(node, tol) {
+
+		clearNode(node -> NW);
+		clearNode(node -> NE);
+		clearNode(node -> SW);
+		clearNode(node -> SE);
+
+		node -> NW = NULL;
+		node -> NE = NULL;
+		node -> SW = NULL;
+		node -> SE = NULL;
+	}
+
+
+	// recursive case is where node's variance > tolerance
+	// in this case, call on pruneTree on each of the node's children.
+	// note: use prunable helper function for the conditional. 
+
+	else {
+
+		pruneTree(tol, node -> NW); 
+		pruneTree(tol, node -> NE); 
+		pruneTree(tol, node -> SW); 
+		pruneTree(tol, node -> SE);
+
+	}
+
+}
+
+
+// need a recursive clear function.... made clearNode to fulfill that requirement
+// not sure what to do with this one (as it takes no arguments, cannot use it recursively).
+// query whether it can be modified to take arguments. assuming it cannot, made clearNode
+// as an argument accepting alternative. Will speak to TA about this. 
 void quadtree::clear() {
+
+	clearNode(node); 
+
+	
 /* your code here */
+
+// recursively clears the node and its descendants; 
+}
+
+// made this originally to be a helper function, but thinking it through, it became the main 
+// clear function. this is because clear needs to be recursive, and needs to be able to call 
+// on a specific node indicated in pruneTree. 
+void quadtree::clearNode(Node* node) {
+
+	if (node == NULL) {
+
+		return;
+	}
+
+	else {
+
+		clearNode(node -> NW);
+		clearNode(node -> NE);
+		clearNode(node -> SW);
+		clearNode(node -> SE);
+		node -> NW = NULL;
+		node -> NE = NULL;
+		node -> SW = NULL;
+		node -> SE = NULL;
+		delete node;
+	}
+
 }
 
 void quadtree::copy(const quadtree & orig){
