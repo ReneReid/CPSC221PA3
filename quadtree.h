@@ -10,6 +10,7 @@
 
 #include <utility>
 #include <cmath>
+#include <math.h>
 #include "cs221util/PNG.h"
 #include "cs221util/RGBAPixel.h"
 #include "stats.h"
@@ -129,6 +130,8 @@ public:
     */
    PNG render();
 
+   vector<vector<RGBAPixel>> buildTreeVector(Node* currentNode); 
+
 
    /*
     *  Prune function trims subtrees as high as possible in the tree.
@@ -171,6 +174,8 @@ private:
 
    Node* root; // ptr to the root of the quadtree
     int edge; // side length of the square image
+    vector<vector<RGBAPixel>> data;
+    PNG treeImage(length);
    
 
    /* =================== start of private PA3 functions ============== */
