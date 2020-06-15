@@ -64,24 +64,24 @@ long stats::getSum(char channel, pair<int,int> ul, int dim){
 
     if (channel == r) {
 
-        sum = sumRed[ul.second + pow(2, dim)][ul.first + pow(2, dim)] - 
-        sumRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim)] - 
-        sumRed[ul.second + pow(2, dim)][ul.first + pow(2, dim) -1] + 
-        sumRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
+        sum = sumRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1] - // good
+        sumRed[ul.second - 1][ul.first + pow(2, dim) - 1] - // good
+        sumRed[ul.second + pow(2, dim) - 1][ul.first - 1] + // good
+        sumRed[ul.second - 1][ul.first - 1]; //good
 
     } if (channel == g) {
 
-        sum = sumGreen[ul.second + pow(2, dim)][ul.first + pow(2, dim)] - 
-        sumGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim)] - 
-        sumGreen[ul.second + pow(2, dim)][ul.first + pow(2, dim) - 1] + 
-        sumGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
+        sum = sumGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1] - 
+        sumGreen[ul.second - 1][ul.first + pow(2, dim) - 1] - 
+        sumGreen[ul.second + pow(2, dim) - 1][ul.first - 1] + 
+        sumGreen[ul.second - 1][ul.first - 1];
 
     } if (channel = b) {
 
-        sum = sumBlue[ul.second + pow(2, dim)][ul.first + pow(2, dim)] - 
-        sumBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim)] - 
-        sumBlue[ul.second + pow(2, dim)][ul.first + pow(2, dim) -1] + 
-        sumBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
+        sum = sumBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1] - 
+        sumBlue[ul.second - 1][ul.first + pow(2, dim) - 1] - 
+        sumBlue[ul.second + pow(2, dim) - 1][ul.first - 1] + 
+        sumBlue[ul.second - 1][ul.first - 1];
     }
 
     return sum;
@@ -89,9 +89,7 @@ long stats::getSum(char channel, pair<int,int> ul, int dim){
 }
 
 // this should be accessing the sumSquare vectors which are populated in the constructor "stats"\
-
-/// @todo  potentially change power sign here
-
+// need to double check TA on this one; received instructions from one TA but isn't yet clear why it works
 long stats::getSumSq(char channel, pair<int,int> ul, int dim){
 
     long sumSq = 0; 

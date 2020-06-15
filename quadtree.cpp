@@ -39,29 +39,17 @@ quadtree::quadtree(PNG & imIn) {
 
 	// STEP 1: determine the largest 2^k by 2^k square that can be extracted
 	// from the PNG
-
 	int dimD = floor(log2(std::min(imIn.width, imIn.height))); 
-
 	edge = pow(2, dimD); 
 
 	// STEP 2: initialize stats using imIn as the argument (i.e. stats(imIn)); 
-
 	stats s = stats(imIn);
 
 	// STEP 3: initialize upper left 
-
 	pair<int, int> ul = (0, 0); 
 
-
-
 	// STEP 4: build quadtree (recursively) using buildTree helper function
-
 	buildTree(& s, & ul, dimD); 
-
-
-	// base case: dim == 0
-	// recursive case: dim > 0 
-        /* Your code here! */
 
 }
 
@@ -75,31 +63,20 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 			Node *currentNode = new Node(ul, dim, s.getAvg(ul, dim), s.getVar(ul, dim));
 			return currentNode;
-
-
 		}
 		
 		else { 
 
 	// step1: make current node using the node constructor. 
-	// if root is NULL (i.e. nothing yet created), root assigned to the node. 
-
-			
+	// if root is NULL (i.e. nothing yet created), root assigned to the node. 		
 				Node *currentNode = new Node(ul, dim, s.getAvg(ul, dim), s.getVar(ul, dim));
 
 				if (root == NULL) {
-
 					root = currentNode; 
 				}
-	 
 
-	// step1 I: point current node to its children, populate the default fields. 
-
-	// step2: call buildTree recursively to create children nodes; 
-
-	// step2 I: determine ul value for each of the children;
-
-	// 
+	// step2 I: determine ul (upper left) value for each of current node's children;
+ 
 				pair<int, int> ulNW = (ul.first, ul.second);
 				pair<int, int> ulNE = (ul.first + ((pow(2, dim))/2 + 1), ul.second); 
 				pair<int, int> ulSW = (ul.first, ul.second + ((pow(2, dim))/2 + 1)); 
@@ -115,6 +92,8 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 				*quadtree subTreeNE = buildTree(& s, ulNE, dim);
 				*quadtree subTreeSW = buildTree(& s, ulSW, dim);
 				*quadtree subTreeSE = buildTree(& s, ulSE, dim); 
+
+	// step 2 IV: point current node to its children, populate the default fields. 
 
 				currentNode -> NW = subTreeNW;
 				currentNode -> NE = subTreeNE;
@@ -137,9 +116,10 @@ PNG quadtree::render() {
 	// PNG is the return type for buildTreeImage. 
 
 	return buildTreeImage(root); 
-
-
 }
+
+
+
 
 	// this function will populate the initially blank PNG with pixels found from those
 	// nodes that constitute leaves, while recursively calling those nodes with children. 
@@ -150,6 +130,7 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 
 	// step 1: create new square shaped PNG (blank canvas), of length and width edge == 2^dim.
 	// "edge" represents the maximum square can be extracted from the image. 
+	// made quadPNG a static object so that it doesn't "disappear" after the function ends. 
 
 	static PNG quadPNG = new PNG(edge, edge); 
 
@@ -158,7 +139,6 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	// PNG pixels will be rendered from parameter (average pixel) contained within leaf node 
 
 	if (currentNode -> NW == NULL) {
-
 		pair<int, int> ul = currentNode.ul;
 		int dim = currentNode.dim; 
 		int length = pow(2, dim); 
@@ -176,7 +156,6 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 				*pixel = currentNode.avg;
 			}
 		}
-
 		return quadPNG;
 	}
 
@@ -186,12 +165,10 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	// i.e. either a node has no children or it has four. 
 
 	else {
-
 		buildTreeImage(currentNode -> NW);
 		buildTreeImage(currentNode -> NE); 
 		buildTreeImage(currentNode -> SW); 
 		buildTreeImage(currentNode -> SE); 
-
 	}
 
 }
@@ -264,22 +241,19 @@ void quadtree::pruneTree(int tol, Node* node) {
 
 }
 
-
-// need a recursive clear function.... made clearNode to fulfill that requirement
+// this one will either be modified or unused. Note:
+// needed a recursive clear function; made clearNode to fulfill that requirement
 // not sure what to do with this one (as it takes no arguments, cannot use it recursively).
 // query whether it can be modified to take arguments. assuming it cannot, made clearNode
-// as an argument accepting alternative. Will speak to TA about this. 
+// as an argument accepting alternative. Will speak to TA. 
 void quadtree::clear() {
 
-	clearNode(node); 
-
-	
+	clearNode(node); 	
 /* your code here */
-
-// recursively clears the node and its descendants; 
 }
 
-// I made this originally to be a helper function, but thinking it through, it became the main 
+
+// Originally made as a helper function, it became the main 
 // clear function. this is because clear needs to be recursive, and needs to be able to call 
 // on a specific node indicated in pruneTree. 
 void quadtree::clearNode(Node* node) {
