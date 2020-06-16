@@ -173,14 +173,37 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 
 }
 
+int quadtree::idealHelper(const Node* node, int leaves, int rsf) {
+	if (node == NULL) return rsf;
+	if 
+}
+
 
 int quadtree::idealPrune(int leaves){
-        /* Your code here! */
+        int rsf = INT_MAX;
+		rsf = idealHelper(leaves, rsf);
+		return rsf;
+}
 
+int quadtree::countPrune(const Node* node, int tol, int rsf) {
+	if (node == NULL || !pruneable(node, tol)) return 0;
+
+	rsf++;
+	rsf += countPrune(node->NE, tol, rsf);
+	rsf += countPrune(node->NE, tol, rsf);
+	rsf += countPrune(node->NE, tol, rsf);
+	rsf += countPrune(node->NE, tol, rsf);
+
+	return rsf;
 }
 
 int quadtree::pruneSize(int tol){
         /* Your code here! */
+		if (root != NULL && pruneable(root, tol)) {
+			return countPrune(root, tol, rsf);
+
+		}
+		return 0;
 }
 
 // this function uses a recursive helper function pruneTree. 
@@ -212,7 +235,7 @@ void quadtree::pruneTree(int tol, Node* node) {
 	// in this case, prune the children off the node. No further drilling. 
 	// note: use prunable helper function for the conditional. 
 
-	if prunable(node, tol) {
+	if (prunable(node, tol)) {
 
 		clearNode(node -> NW);
 		clearNode(node -> NE);
