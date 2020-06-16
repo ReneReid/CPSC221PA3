@@ -15,36 +15,36 @@ stats::stats(PNG & im){
                     sumRed[y][x] = (pixel -> r); 
                     sumGreen[y][x] = (pixel -> g); 
                     sumBlue[y][x] = (pixel -> b);
-                    sumSqRed[y][x] = pow(sumRed[y][x], 2); 
-                    sumSqGreen[y][x] = pow(sumGreen[y][x], 2);
-                    sumSqBlue[y][x] = pow(sumBlue[y][x], 2); 
+                    sumSqRed[y][x] = pow((pixel -> r), 2); 
+                    sumSqGreen[y][x] = pow((pixel -> g), 2);
+                    sumSqBlue[y][x] = pow((pixel -> b), 2); 
                 
                 } else {
 
                 sumRed[y][x] = sumRed[y][x-1] + (pixel -> r);
                 sumGreen[y][x] = sumGreen[y][x-1] + (pixel -> g);
                 sumBlue[y][x] = sumBlue[y][x-1] + (pixel -> b);
-                sumSqRed[y][x] = pow(sumRed[y][x], 2); 
-                sumSqGreen[y][x] = pow(sumGreen[y][x], 2);
-                sumSqBlue[y][x] = pow(sumBlue[y][x], 2); 
+                sumSqRed[y][x] = sumSqRed[y][x-1] + pow((pixel -> r), 2);
+                sumSqGreen[y][x] = sumSqGreen[y][x-1] + pow((pixel -> g), 2);
+                sumSqBlue[y][x] = sumSqBlue[y][x-1] + pow((pixel -> b), 2); 
                 }
             } if (x == 0) {
 
                 sumRed[y][x] = sumRed[y-1][x] + (pixel -> r);
                 sumGreen[y][x] = sumGreen[y-1][x] + (pixel -> g);
                 sumBlue[y][x] = sumBlue[y-1][x] + (pixel -> b);
-                sumSqRed[y][x] = pow(sumRed[y][x], 2); 
-                sumSqGreen[y][x] = pow(sumGreen[y][x], 2);
-                sumSqBlue[y][x] = pow(sumBlue[y][x], 2); 
+                sumSqRed[y][x] = sumSqRed[y-1][x] + pow((pixel -> r), 2); 
+                sumSqGreen[y][x] = sumSqGreen[y-1][x] + pow((pixel -> g), 2);
+                sumSqBlue[y][x] = sumSqBlue[y-1][x] + pow((pixel -> b), 2);
                 
             } if (x != 0 && y != 0) {
 
                 sumRed[y][x] = sumRed[y-1][x] + sumRed[y][x-1] - sumRed[y-1][x-1] + (pixel -> r);
                 sumGreen[y][x] = sumGreen[y-1][x] + sumGreen[y][x-1] + sumGreen[y-1][x-1] + (pixel -> g);
                 sumBlue[y][x] = sumBlue[y-1][x] + sumBlue[y][x-1] + sumBlue[y-1][x-1] + (pixel -> b);
-                sumSqRed[y][x] = pow(sumRed[y][x], 2); 
-                sumSqGreen[y][x] = pow(sumGreen[y][x], 2);
-                sumSqBlue[y][x] = pow(sumBlue[y][x], 2); 
+                sumSqRed[y][x] = sumSqRed[y-1][x] + sumSqRed[y][x-1] - sumSqRed[y-1][x-1] + pow((pixel -> r), 2); 
+                sumSqGreen[y][x] = sumSqGreen[y-1][x] + sumSqGreen[y][x-1] - sumSqGreen[y-1][x-1] + pow((pixel -> g), 2);
+                sumSqBlue[y][x] = sumSqBlue[y-1][x] + sumSqBlue[y][x-1] - sumSqBlue[y-1][x-1] + pow((pixel -> b), 2); 
             }
         }
     }
@@ -54,11 +54,11 @@ stats::stats(PNG & im){
 /* Your code here!! */
 
 }
+
+
 // calculates the sum (for each color channel) for a square
 // whose position is by ul value and size by 2^dim.  
-/// @todo need to revise power statements: power in C++ is pow(base, exponent); 
-
-
+// refer to diagram for visual explanation (ask Rene)
 long stats::getSum(char channel, pair<int,int> ul, int dim){
     long sum = 0; 
 
@@ -89,35 +89,34 @@ long stats::getSum(char channel, pair<int,int> ul, int dim){
 }
 
 // this should be accessing the sumSquare vectors which are populated in the constructor "stats"\
-// need to double check TA on this one; received instructions from one TA but isn't yet clear why it works
+
 long stats::getSumSq(char channel, pair<int,int> ul, int dim){
 
     long sumSq = 0; 
 
     if (channel == r) {
 
-        sumSq = sumSqRed[ul.second + pow(2, dim)][ul.first + pow(2, dim)] - 
-        sumSqRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim)] - 
-        sumSqRed[ul.second + pow(2, dim)][ul.first + pow(2, dim) -1] + 
-        sumSqRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
+        sumSq = sumSqRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1] - // good
+        sumSqRed[ul.second - 1][ul.first + pow(2, dim) - 1] - // good
+        sumSqRed[ul.second + pow(2, dim) - 1][ul.first - 1] + // good
+        sumSqRed[ul.second - 1][ul.first - 1]; //good
 
     } if (channel == g) {
 
-        sumSq = sumSqGreen[ul.second + pow(2, dim)][ul.first + pow(2, dim)] - 
-        sumSqGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim)] - 
-        sumSqGreen[ul.second + pow(2, dim)][ul.first + pow(2, dim) - 1] + 
-        sumSqGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
+        sumSq = sumSqGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1] - 
+        sumSqGreen[ul.second - 1][ul.first + pow(2, dim) - 1] - 
+        sumSqGreen[ul.second + pow(2, dim) - 1][ul.first - 1] + 
+        sumSqGreen[ul.second - 1][ul.first - 1];
 
     } if (channel = b) {
 
-        sumSq = sumBlue[ul.second + pow(2, dim)][ul.first + pow(2, dim)] - 
-        sumSqBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim)] - 
-        sumSqBlue[ul.second + pow(2, dim)][ul.first + pow(2, dim) -1] + 
-        sumSqBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
+        sumSq = sumSqBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1] - 
+        sumSqBlue[ul.second - 1][ul.first + pow(2, dim) - 1] - 
+        sumSqBlue[ul.second + pow(2, dim) - 1][ul.first - 1] + 
+        sumSqBlue[ul.second - 1][ul.first - 1];
     }
 
     return sumSq;
-    
     
     
     //long sum = getSum(channel, ul, dim); 

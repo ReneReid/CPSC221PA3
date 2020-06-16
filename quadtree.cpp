@@ -78,9 +78,9 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 	// step2 I: determine ul (upper left) value for each of current node's children;
  
 				pair<int, int> ulNW = (ul.first, ul.second);
-				pair<int, int> ulNE = (ul.first + ((pow(2, dim))/2 + 1), ul.second); 
-				pair<int, int> ulSW = (ul.first, ul.second + ((pow(2, dim))/2 + 1)); 
-				pair<int, int> ulSE = (ul.first + ((pow(2, dim))/2 + 1), ul.second + ((pow(2, dim))/2 + 1));
+				pair<int, int> ulNE = (ul.first + ((pow(2, dim))/2), ul.second); 
+				pair<int, int> ulSW = (ul.first, ul.second + ((pow(2, dim))/2)); 
+				pair<int, int> ulSE = (ul.first + ((pow(2, dim))/2), ul.second + ((pow(2, dim))/2));
 
 	// step 2 II: decrement dimension, and pass the new value as children's dimension 
 
@@ -149,8 +149,8 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 		int endX = startX + length; 
 		int endY = startY + length;
 
-		for (int y = startY; y <= endY; y++) {
-			for (int x = startX; x <= endX; x++) {
+		for (int y = startY; y < endY; y++) {
+			for (int x = startX; x < endX; x++) {
 
 				RGBAPixel *pixel = quadPNG.getPixel(x, y); 
 				*pixel = currentNode.avg;
@@ -164,12 +164,13 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	// note that if a node has children, it has four of them.  
 	// i.e. either a node has no children or it has four. 
 
-	else {
-		buildTreeImage(currentNode -> NW);
-		buildTreeImage(currentNode -> NE); 
-		buildTreeImage(currentNode -> SW); 
-		buildTreeImage(currentNode -> SE); 
-	}
+	
+	buildTreeImage(currentNode -> NW);
+	buildTreeImage(currentNode -> NE); 
+	buildTreeImage(currentNode -> SW); 
+	buildTreeImage(currentNode -> SE); 
+	
+	return quadPNG;
 
 }
 
