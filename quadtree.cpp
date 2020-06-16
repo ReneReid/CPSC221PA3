@@ -181,8 +181,8 @@ int quadtree::idealPrune(int leaves){
 
 int quadtree::pruneSize(int tol){
         /* Your code here! */
-
 }
+
 // this function uses a recursive helper function pruneTree. 
 void quadtree::prune(int tol){
         /* Your code here! */
@@ -278,8 +278,26 @@ void quadtree::clearNode(Node* node) {
 
 }
 
+// Does a deep copy of the nodes
+quadtree::Node * quadtree::copyHelper(const Node & node) {
+	if (node == NULL) return NULL;
+
+	newNode = new Node(node.upLeft, node.dim, node.avg, node.var);
+	newNode->NW = copyHelper(node->NW);
+	newNode->NE = copyHelper(node->NE);
+	newNode->SE = copyHelper(node->SE);
+	newNode->SW = copyHelper(node->SW);
+	return newNode;
+
+}
+
 void quadtree::copy(const quadtree & orig){
-/* your code here */
+	root = new Node(root.upLeft, root.dim, root.avg, root.var);
+	root->NW = copyHelper(orig->NW);
+	root->NE = copyHelper(orig->NE);
+	root->SE = copyHelper(orig->SE);
+	root->SW = copyHelper(orig->SW);
+	edge = orig.edge;
 }
 
 

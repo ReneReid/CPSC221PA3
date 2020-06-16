@@ -190,6 +190,8 @@ private:
    // recursive helper function of clear(); 
    void quadtree::clearNode(Node* node);
 
+   quadtree::Node * quadtree::copyHelper(const Node & node);
+
    /**
     * Complete for pa3
     * Copies the parameter other quadtree into the current quadtree.
