@@ -174,13 +174,20 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 
 }
 
+int quadTree::binarySearch(int max, int min, int target) {
+	int mid = (max + min) / 2;
+	if (countPrune(root, mid) == target) return mid;
+	if (countPrune(root, mid) > target) {
+		return binarySearch(mid - 1, min, target);
+	}
+	return binarySearch(max, mid + 1, target);
+}
+
 
 int quadtree::idealPrune(int leaves){
-        int rsf = INT_MAX;
-		//rsf = idealHelper(leaves, rsf);
+        return binarySearch(INT_MAX, 0, leaves);
 		// prune size & binary search
 		// give sample tolerance -> 1, change it with binary search
-		return rsf;
 }
 
 int quadtree::countPrune(Node* node, int tol) {
