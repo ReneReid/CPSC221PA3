@@ -28,7 +28,7 @@ stats::stats(PNG & im){
                 sumSqGreen[y][x] = sumSqGreen[y][x-1] + pow((pixel -> g), 2);
                 sumSqBlue[y][x] = sumSqBlue[y][x-1] + pow((pixel -> b), 2); 
                 }
-            } if (x == 0) {
+            } if (x == 0) { 
 
                 sumRed[y][x] = sumRed[y-1][x] + (pixel -> r);
                 sumGreen[y][x] = sumGreen[y-1][x] + (pixel -> g);
