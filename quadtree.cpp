@@ -178,6 +178,8 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 int quadtree::idealPrune(int leaves){
         int rsf = INT_MAX;
 		//rsf = idealHelper(leaves, rsf);
+		// prune size & binary search
+		// give sample tolerance -> 1, change it with binary search
 		return rsf;
 }
 
