@@ -143,6 +143,8 @@ public:
     */
    void prune(int tol);
 
+   int quadtree::countPrune(const Node* node, int tol, int rsf);
+
    /*
     * The pruneSize function takes a tolerance as input, and returns
     * the number of leaves that would result _if_ the tree were to 
@@ -189,6 +191,8 @@ private:
 
    // recursive helper function of clear(); 
    void quadtree::clearNode(Node* node);
+
+   quadtree::Node * quadtree::copyHelper(const Node & node);
 
    /**
     * Complete for pa3

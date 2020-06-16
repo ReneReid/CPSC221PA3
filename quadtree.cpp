@@ -174,16 +174,39 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 
 }
 
+int quadtree::idealHelper(const Node* node, int leaves, int rsf) {
+	if (node == NULL) return rsf;
+	if 
+}
+
 
 int quadtree::idealPrune(int leaves){
-        /* Your code here! */
+        int rsf = INT_MAX;
+		rsf = idealHelper(leaves, rsf);
+		return rsf;
+}
 
+int quadtree::countPrune(const Node* node, int tol, int rsf) {
+	if (node == NULL || !pruneable(node, tol)) return 0;
+
+	rsf++;
+	rsf += countPrune(node->NE, tol, rsf);
+	rsf += countPrune(node->NE, tol, rsf);
+	rsf += countPrune(node->NE, tol, rsf);
+	rsf += countPrune(node->NE, tol, rsf);
+
+	return rsf;
 }
 
 int quadtree::pruneSize(int tol){
         /* Your code here! */
+		if (root != NULL && pruneable(root, tol)) {
+			return countPrune(root, tol, rsf);
 
+		}
+		return 0;
 }
+
 // this function uses a recursive helper function pruneTree. 
 void quadtree::prune(int tol){
         /* Your code here! */
@@ -213,7 +236,7 @@ void quadtree::pruneTree(int tol, Node* node) {
 	// in this case, prune the children off the node. No further drilling. 
 	// note: use prunable helper function for the conditional. 
 
-	if prunable(node, tol) {
+	if (prunable(node, tol)) {
 
 		clearNode(node -> NW);
 		clearNode(node -> NE);
@@ -279,8 +302,26 @@ void quadtree::clearNode(Node* node) {
 
 }
 
+// Does a deep copy of the nodes
+quadtree::Node * quadtree::copyHelper(const Node & node) {
+	if (node == NULL) return NULL;
+
+	newNode = new Node(node.upLeft, node.dim, node.avg, node.var);
+	newNode->NW = copyHelper(node->NW);
+	newNode->NE = copyHelper(node->NE);
+	newNode->SE = copyHelper(node->SE);
+	newNode->SW = copyHelper(node->SW);
+	return newNode;
+
+}
+
 void quadtree::copy(const quadtree & orig){
-/* your code here */
+	root = new Node(root.upLeft, root.dim, root.avg, root.var);
+	root->NW = copyHelper(orig->NW);
+	root->NE = copyHelper(orig->NE);
+	root->SE = copyHelper(orig->SE);
+	root->SW = copyHelper(orig->SW);
+	edge = orig.edge;
 }
 
 
