@@ -143,7 +143,7 @@ public:
     */
    void prune(int tol);
 
-   int quadtree::countPrune(const Node* node, int tol, int rsf);
+   int countPrune(Node* node, int tol);
 
    /*
     * The pruneSize function takes a tolerance as input, and returns
@@ -190,9 +190,9 @@ private:
    void clear();
 
    // recursive helper function of clear(); 
-   void quadtree::clearNode(Node* node);
+   void clearNode(Node* node);
 
-   quadtree::Node * quadtree::copyHelper(const Node & node);
+   Node * copyHelper(Node * node);
 
    /**
     * Complete for pa3
@@ -212,7 +212,7 @@ private:
       */
    Node * buildTree(stats & s, pair<int,int> & ul , int dim);
 
-   void quadtree::pruneTree(int tol, Node* node);
+   void pruneTree(int tol, Node* node);
 
     /* prunable is a pure virtual function, and as such it must
     * be implemented in a derived class. Prunable takes parameters

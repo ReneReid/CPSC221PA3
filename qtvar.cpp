@@ -2,7 +2,7 @@
 
 bool qtvar::prunable(Node * root, int tol) {
 
-    if (root.var >= (double) tol) {
+    if (root->var >= (double) tol) {
         
         return false;
 

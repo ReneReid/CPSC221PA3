@@ -39,17 +39,17 @@ quadtree::quadtree(PNG & imIn) {
 
 	// STEP 1: determine the largest 2^k by 2^k square that can be extracted
 	// from the PNG
-	int dimD = floor(log2(std::min(imIn.width, imIn.height))); 
+	int dimD = floor(log2(std::min(imIn.width(), imIn.height()))); 
 	edge = pow(2, dimD); 
 
 	// STEP 2: initialize stats using imIn as the argument (i.e. stats(imIn)); 
 	stats s = stats(imIn);
 
 	// STEP 3: initialize upper left 
-	pair<int, int> ul = (0, 0); 
+	pair<int, int> ul = make_pair(0, 0); 
 
 	// STEP 4: build quadtree (recursively) using buildTree helper function
-	buildTree(& s, & ul, dimD); 
+	buildTree(s, ul, dimD); 
 
 }
 
@@ -77,10 +77,10 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 	// step2 I: determine ul (upper left) value for each of current node's children;
  
-				pair<int, int> ulNW = (ul.first, ul.second);
-				pair<int, int> ulNE = (ul.first + ((pow(2, dim))/2), ul.second); 
-				pair<int, int> ulSW = (ul.first, ul.second + ((pow(2, dim))/2)); 
-				pair<int, int> ulSE = (ul.first + ((pow(2, dim))/2), ul.second + ((pow(2, dim))/2));
+				pair<int, int> ulNW = make_pair(ul.first, ul.second);
+				pair<int, int> ulNE = make_pair(ul.first + ((pow(2, dim))/2), ul.second); 
+				pair<int, int> ulSW = make_pair(ul.first, ul.second + ((pow(2, dim))/2)); 
+				pair<int, int> ulSE = make_pair(ul.first + ((pow(2, dim))/2), ul.second + ((pow(2, dim))/2)); 
 
 	// step 2 II: decrement dimension, and pass the new value as children's dimension 
 
@@ -88,10 +88,10 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 	// step 2 III: buildTree for each of the children.
 
-				*quadtree subTreeNW = buildTree(& s, ulNW, dim);
-				*quadtree subTreeNE = buildTree(& s, ulNE, dim);
-				*quadtree subTreeSW = buildTree(& s, ulSW, dim);
-				*quadtree subTreeSE = buildTree(& s, ulSE, dim); 
+				Node* subTreeNW = buildTree( s, ulNW, dim);
+				Node* subTreeNE = buildTree( s, ulNE, dim);
+				Node* subTreeSW = buildTree( s, ulSW, dim);
+				Node* subTreeSE = buildTree( s, ulSE, dim); 
 
 	// step 2 IV: point current node to its children, populate the default fields. 
 
@@ -132,19 +132,19 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	// "edge" represents the maximum square can be extracted from the image. 
 	// made quadPNG a static object so that it doesn't "disappear" after the function ends. 
 
-	static PNG quadPNG = new PNG(edge, edge); 
+	static PNG* quadPNG = new PNG(edge, edge); 
 
 	// base case: the current node has no children;
 	// this means that we are at a leaf
 	// PNG pixels will be rendered from parameter (average pixel) contained within leaf node 
 
 	if (currentNode -> NW == NULL) {
-		pair<int, int> ul = currentNode.ul;
-		int dim = currentNode.dim; 
+		pair<int, int> ul = currentNode->upLeft;
+		int dim = currentNode->dim; 
 		int length = pow(2, dim); 
 
-		int startX = ul -> first;
-		int startY = ul -> second;
+		int startX = ul.first;
+		int startY = ul.second;
 
 		int endX = startX + length; 
 		int endY = startY + length;
@@ -152,11 +152,11 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 		for (int y = startY; y < endY; y++) {
 			for (int x = startX; x < endX; x++) {
 
-				RGBAPixel *pixel = quadPNG.getPixel(x, y); 
-				*pixel = currentNode.avg;
+				RGBAPixel *pixel = quadPNG->getPixel(x, y); 
+				*pixel = currentNode->avg;
 			}
 		}
-		return quadPNG;
+		return *quadPNG;
 	}
 
 	// recursive case: current node has children; call renderTree on each child. 
@@ -170,38 +170,33 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	buildTreeImage(currentNode -> SW); 
 	buildTreeImage(currentNode -> SE); 
 	
-	return quadPNG;
+	return *quadPNG;
 
-}
-
-int quadtree::idealHelper(const Node* node, int leaves, int rsf) {
-	if (node == NULL) return rsf;
-	if 
 }
 
 
 int quadtree::idealPrune(int leaves){
         int rsf = INT_MAX;
-		rsf = idealHelper(leaves, rsf);
+		//rsf = idealHelper(leaves, rsf);
 		return rsf;
 }
 
-int quadtree::countPrune(const Node* node, int tol, int rsf) {
-	if (node == NULL || !pruneable(node, tol)) return 0;
-
-	rsf++;
-	rsf += countPrune(node->NE, tol, rsf);
-	rsf += countPrune(node->NE, tol, rsf);
-	rsf += countPrune(node->NE, tol, rsf);
-	rsf += countPrune(node->NE, tol, rsf);
+int quadtree::countPrune(Node* node, int tol) {
+	if (node == NULL || !prunable(node, tol)) return 0;
+	// refactor
+	int rsf = 1;
+	rsf += countPrune(node->NE, tol);
+	rsf += countPrune(node->NE, tol);
+	rsf += countPrune(node->NE, tol);
+	rsf += countPrune(node->NE, tol);
 
 	return rsf;
 }
 
 int quadtree::pruneSize(int tol){
         /* Your code here! */
-		if (root != NULL && pruneable(root, tol)) {
-			return countPrune(root, tol, rsf);
+		if (root != NULL && prunable(root, tol)) {
+			return countPrune(root, tol);
 
 		}
 		return 0;
@@ -272,7 +267,7 @@ void quadtree::pruneTree(int tol, Node* node) {
 // as an argument accepting alternative. Will speak to TA. 
 void quadtree::clear() {
 
-	clearNode(node); 	
+	clearNode(root); 	
 /* your code here */
 }
 
@@ -303,10 +298,10 @@ void quadtree::clearNode(Node* node) {
 }
 
 // Does a deep copy of the nodes
-quadtree::Node * quadtree::copyHelper(const Node & node) {
+quadtree::Node * quadtree::copyHelper(Node * node) {
 	if (node == NULL) return NULL;
 
-	newNode = new Node(node.upLeft, node.dim, node.avg, node.var);
+	Node* newNode = new Node(node->upLeft, node->dim, node->avg, node->var);
 	newNode->NW = copyHelper(node->NW);
 	newNode->NE = copyHelper(node->NE);
 	newNode->SE = copyHelper(node->SE);
@@ -316,11 +311,11 @@ quadtree::Node * quadtree::copyHelper(const Node & node) {
 }
 
 void quadtree::copy(const quadtree & orig){
-	root = new Node(root.upLeft, root.dim, root.avg, root.var);
-	root->NW = copyHelper(orig->NW);
-	root->NE = copyHelper(orig->NE);
-	root->SE = copyHelper(orig->SE);
-	root->SW = copyHelper(orig->SW);
+	root = new Node(orig.root->upLeft, orig.root->dim, orig.root->avg, orig.root->var);
+	root->NW = copyHelper(orig.root->NW);
+	root->NE = copyHelper(orig.root->NE);
+	root->SE = copyHelper(orig.root->SE);
+	root->SW = copyHelper(orig.root->SW);
 	edge = orig.edge;
 }
 
