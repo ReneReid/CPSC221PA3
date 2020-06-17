@@ -33,10 +33,6 @@ stats::stats(PNG & im){
     for (unsigned y = 0; y < im.height(); y ++) {
         for (unsigned x = 0; x < im.width(); x++) {
             RGBAPixel *pixel = im.getPixel(x, y);
-<<<<<<< HEAD
-
-=======
->>>>>>> master
             if (y == 0) {
 
                 if (x == 0) {
