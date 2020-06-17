@@ -84,7 +84,7 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 	// step 2 II: decrement dimension, and pass the new value as children's dimension 
 
-				nextDim = dim - 1; 
+				 int nextDim = dim - 1; 
 
 	// step 2 III: buildTree for each of the children.
 
@@ -114,8 +114,8 @@ PNG quadtree::render() {
 	// this helper will go through the tree, and pull pixel from those nodes that are = leaf
 	// and continue drilling for those nodes that have children. 
 	// PNG is the return type for buildTreeImage. 
-
-	return buildTreeImage(root); 
+	static PNG* quadPNG = new PNG(edge, edge);
+	return buildTreeImage(root, quadPNG); 
 }
 
 
@@ -126,18 +126,19 @@ PNG quadtree::render() {
 	// referred PA1 for guidance re render (specifically PNG files, block).
 	// created new PNG files within this assignment folder
 
-PNG quadtree::buildTreeImage(Node* currentNode) {
+PNG quadtree::buildTreeImage(Node* currentNode, PNG* quadPNG) {
 
 	// step 1: create new square shaped PNG (blank canvas), of length and width edge == 2^dim.
 	// "edge" represents the maximum square can be extracted from the image. 
 	// made quadPNG a static object so that it doesn't "disappear" after the function ends. 
 
-	static PNG* quadPNG = new PNG(edge, edge); 
+	 
 
 	// base case: the current node has no children;
 	// this means that we are at a leaf
 	// PNG pixels will be rendered from parameter (average pixel) contained within leaf node 
-
+	std::cout << currentNode->upLeft.first << " ";
+	std::cout << currentNode->upLeft.second << std::endl;
 	if (currentNode -> NW == NULL) {
 		pair<int, int> ul = currentNode->upLeft;
 		int dim = currentNode->dim; 
@@ -157,7 +158,7 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 			}
 		}
 		return *quadPNG;
-	}
+	} else {
 
 	// recursive case: current node has children; call renderTree on each child. 
 	// function will keep drilling down. 
@@ -165,12 +166,13 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 	// i.e. either a node has no children or it has four. 
 
 	
-	buildTreeImage(currentNode -> NW);
-	buildTreeImage(currentNode -> NE); 
-	buildTreeImage(currentNode -> SW); 
-	buildTreeImage(currentNode -> SE); 
+	buildTreeImage(currentNode -> NW, quadPNG);
+	buildTreeImage(currentNode -> NE, quadPNG); 
+	buildTreeImage(currentNode -> SW, quadPNG); 
+	buildTreeImage(currentNode -> SE, quadPNG); 
 	
 	return *quadPNG;
+	}
 
 }
 
@@ -195,9 +197,9 @@ int quadtree::countPrune(Node* node, int tol) {
 	// refactor
 	int rsf = 1;
 	rsf += countPrune(node->NE, tol);
-	rsf += countPrune(node->NE, tol);
-	rsf += countPrune(node->NE, tol);
-	rsf += countPrune(node->NE, tol);
+	rsf += countPrune(node->NW, tol);
+	rsf += countPrune(node->SE, tol);
+	rsf += countPrune(node->SW, tol);
 
 	return rsf;
 }
@@ -206,7 +208,6 @@ int quadtree::pruneSize(int tol){
         /* Your code here! */
 		if (root != NULL && prunable(root, tol)) {
 			return countPrune(root, tol);
-
 		}
 		return 0;
 }

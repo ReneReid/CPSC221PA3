@@ -28,89 +28,89 @@ TEST_CASE("qtcount::basic canada","[weight=1][part=qtcount]"){
 */
     
 
-TEST_CASE("stats::basic rectArea","[weight=1][part=stats]"){
+// TEST_CASE("stats::basic rectArea","[weight=1][part=stats]"){
 
-    //cout << "RR says line 33: " << endl;
+//     //cout << "RR says line 33: " << endl;
 
-    PNG data; data.resize(2,2);
+//     PNG data; data.resize(2,2);
 
-    //cout << "RR says line 37: " << endl;
-    stats s(data);
-    //cout << "RR says line 39: " << endl;
-    long result = s.rectArea(1);
-    //cout << "RR says line 41: " << endl;
+//     //cout << "RR says line 37: " << endl;
+//     stats s(data);
+//     //cout << "RR says line 39: " << endl;
+//     long result = s.rectArea(1);
+//     //cout << "RR says line 41: " << endl;
 
-    REQUIRE(result == 4);
-    //cout << "RR says line 44: " << endl;
+//     REQUIRE(result == 4);
+//     //cout << "RR says line 44: " << endl;
     
-}
+// }
 
-TEST_CASE("stats::basic getAvg","[weight=1][part=stats]"){
-    PNG data; data.resize(2,2);
-    for (int i = 0; i < 2; i ++){
-        for (int j = 0; j < 2; j++){
-            RGBAPixel * p = data.getPixel(i,j);
-            p->r = 20 * i + 3 * j;
-            p->g = 3 * i + 20 * j;
-            p->b = 23 * i + 23 * j;
-            p->a = 1.0;
-        }
-    }
-    stats s(data);
-    //cout << "RR says testComp.cpp line 60: " << endl;
-    pair<int,int> ul(0,0);
-    //cout << "RR says testComp.cpp line 62: " << endl;
-    RGBAPixel result = s.getAvg(ul,1);
-    //cout << "RR says testComp.cpp line 64: " << endl;
-    RGBAPixel expected(11,11,23);
-    //cout << "RR says testComp.cpp line 66: " << endl;
-    //cout << int(result.r) << " " << int(result.g) << " " << int(result.b) << endl;
-    REQUIRE(result == expected);
-}
-
-
-TEST_CASE("stats::basic variance","[weight=1][part=stats]"){
-    PNG data; data.resize(2,2);
-    for (int i = 0; i < 2; i ++){
-        for (int j = 0; j < 2; j++){
-            RGBAPixel * p = data.getPixel(i,j);
-            p->r = 20 * i + 3 * j;
-            p->g = 3 * i + 20 * j;
-            p->b = 23 * i + 23 * j;
-            p->a = 1.0;
-        }
-    }
-    stats s(data);
-    pair<int,int> ul(0,0);
-    long result = s.getVar(ul,1);
+// TEST_CASE("stats::basic getAvg","[weight=1][part=stats]"){
+//     PNG data; data.resize(2,2);
+//     for (int i = 0; i < 2; i ++){
+//         for (int j = 0; j < 2; j++){
+//             RGBAPixel * p = data.getPixel(i,j);
+//             p->r = 20 * i + 3 * j;
+//             p->g = 3 * i + 20 * j;
+//             p->b = 23 * i + 23 * j;
+//             p->a = 1.0;
+//         }
+//     }
+//     stats s(data);
+//     //cout << "RR says testComp.cpp line 60: " << endl;
+//     pair<int,int> ul(0,0);
+//     //cout << "RR says testComp.cpp line 62: " << endl;
+//     RGBAPixel result = s.getAvg(ul,1);
+//     //cout << "RR says testComp.cpp line 64: " << endl;
+//     RGBAPixel expected(11,11,23);
+//     //cout << "RR says testComp.cpp line 66: " << endl;
+//     //cout << int(result.r) << " " << int(result.g) << " " << int(result.b) << endl;
+//     REQUIRE(result == expected);
+// }
 
 
-    REQUIRE(result == 1876);
-} 
+// TEST_CASE("stats::basic variance","[weight=1][part=stats]"){
+//     PNG data; data.resize(2,2);
+//     for (int i = 0; i < 2; i ++){
+//         for (int j = 0; j < 2; j++){
+//             RGBAPixel * p = data.getPixel(i,j);
+//             p->r = 20 * i + 3 * j;
+//             p->g = 3 * i + 20 * j;
+//             p->b = 23 * i + 23 * j;
+//             p->a = 1.0;
+//         }
+//     }
+//     stats s(data);
+//     pair<int,int> ul(0,0);
+//     long result = s.getVar(ul,1);
 
-TEST_CASE("qtcount::basic ctor render","[weight=1][part=qtcount]"){
-    PNG img;
-    img.readFromFile("images/orig/geo.png");
 
-    qtcount t1(img);
+//     REQUIRE(result == 1876);
+// } 
 
-    PNG out = t1.render();
+// TEST_CASE("qtcount::basic ctor render","[weight=1][part=qtcount]"){
+//     PNG img;
+//     img.readFromFile("images/orig/geo.png");
 
-    REQUIRE(out==img);
-}
+//     qtcount t1(img);
+
+//     PNG out = t1.render();
+
+//     REQUIRE(out==img);
+// }
 
 
-TEST_CASE("qtcount::basic copy","[weight=1][part=qtcount]"){
-    PNG img;
-    img.readFromFile("images/orig/geo.png");
+// TEST_CASE("qtcount::basic copy","[weight=1][part=qtcount]"){
+//     PNG img;
+//     img.readFromFile("images/orig/geo.png");
 
-    qtcount t1(img);
-    qtcount t1copy(t1);
+//     qtcount t1(img);
+//     qtcount t1copy(t1);
 
-    PNG out = t1copy.render();
+//     PNG out = t1copy.render();
 
-    REQUIRE(out==img);
-}
+//     REQUIRE(out==img);
+// }
 
 
 
@@ -130,7 +130,7 @@ TEST_CASE("qtcount::basic prune","[weight=1][part=qtcount]"){
     REQUIRE(expected==result);
 }
 
-TEST_CASE("qtcount::basic pruneSize","[weight=1][part=qtcount]"){
+/* TEST_CASE("qtcount::basic pruneSize","[weight=1][part=qtcount]"){
     PNG img;
     img.readFromFile("images/orig/adasquare.png");
     
@@ -193,3 +193,4 @@ TEST_CASE("qtvar::basic idealPrune","[weight=1][part=qtvar]"){
 
     REQUIRE(expected==result);
 }
+ */
