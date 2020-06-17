@@ -29,7 +29,7 @@ TEST_CASE("qtcount::basic canada","[weight=1][part=qtcount]"){
     
 
 
- /* TEST_CASE("stats::basic rectArea","[weight=1][part=stats]"){
+TEST_CASE("stats::basic rectArea","[weight=1][part=stats]"){
 
     PNG data; data.resize(2,2);
     stats s(data);
@@ -75,7 +75,7 @@ TEST_CASE("stats::basic variance","[weight=1][part=stats]"){
     long result = s.getVar(ul,1);
 
     REQUIRE(result == 1876);
-} */
+} 
 
 TEST_CASE("qtcount::basic ctor render","[weight=1][part=qtcount]"){
     PNG img;
