@@ -84,14 +84,14 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 
 	// step 2 II: decrement dimension, and pass the new value as children's dimension 
 
-				dim--; 
+				nextDim = dim - 1; 
 
 	// step 2 III: buildTree for each of the children.
 
-				Node* subTreeNW = buildTree( s, ulNW, dim);
-				Node* subTreeNE = buildTree( s, ulNE, dim);
-				Node* subTreeSW = buildTree( s, ulSW, dim);
-				Node* subTreeSE = buildTree( s, ulSE, dim); 
+				Node* subTreeNW = buildTree( s, ulNW, nextDim);
+				Node* subTreeNE = buildTree( s, ulNE, nextDim);
+				Node* subTreeSW = buildTree( s, ulSW, nextDim);
+				Node* subTreeSE = buildTree( s, ulSE, nextDim); 
 
 	// step 2 IV: point current node to its children, populate the default fields. 
 
