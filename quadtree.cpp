@@ -174,7 +174,7 @@ PNG quadtree::buildTreeImage(Node* currentNode) {
 
 }
 
-int quadTree::binarySearch(int max, int min, int target) {
+int quadtree::binarySearch(int max, int min, int target) {
 	int mid = (max + min) / 2;
 	if (countPrune(root, mid) == target) return mid;
 	if (countPrune(root, mid) > target) {

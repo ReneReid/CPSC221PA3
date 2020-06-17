@@ -18,6 +18,8 @@ class qtcount:public quadtree {
         qtcount(PNG & im):quadtree(im){} // invokes base class constructor
     private:
 
+        int helper(Node * root, int tol, RGBAPixel avg);
+
         /* function prunable returns true if all of the leaf nodes in root's 
         * subtree have color within tol of root->avg. Distance is measured as 
         * square distance over the color channels: (r1-r2)^2 + (g1-g2)^2 + (b1-b2)^2 
