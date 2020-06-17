@@ -8,8 +8,6 @@ stats::stats(PNG & im){
     for (unsigned y = 0; y < im.height(); y ++) {
         for (unsigned x = 0; x < im.width(); x++) {
             RGBAPixel *pixel = im.getPixel(x, y);
-            sumRed.resize(2);
-            sumRed[0].resize(2);
             if (y == 0) {
 
                 if (x == 0) {
