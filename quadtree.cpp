@@ -49,7 +49,7 @@ quadtree::quadtree(PNG & imIn) {
 	pair<int, int> ul = make_pair(0, 0); 
 
 	// STEP 4: build quadtree (recursively) using buildTree helper function
-	buildTree(s, ul, dimD); 
+	root = buildTree(s, ul, dimD); 
 
 }
 
@@ -71,9 +71,9 @@ quadtree::Node * quadtree::buildTree(stats & s, pair<int,int> & ul, int dim) {
 	// if root is NULL (i.e. nothing yet created), root assigned to the node. 		
 				Node *currentNode = new Node(ul, dim, s.getAvg(ul, dim), s.getVar(ul, dim));
 
-				if (root == NULL) {
-					root = currentNode; 
-				}
+				// if (root == NULL) {
+				// 	root = currentNode; 
+				// }
 
 	// step2 I: determine ul (upper left) value for each of current node's children;
  
@@ -114,7 +114,7 @@ PNG quadtree::render() {
 	// this helper will go through the tree, and pull pixel from those nodes that are = leaf
 	// and continue drilling for those nodes that have children. 
 	// PNG is the return type for buildTreeImage. 
-	static PNG quadPNG(edge, edge);
+	PNG quadPNG(edge, edge);
 	buildTreeImage(root, quadPNG); 
 	return quadPNG;
 }
@@ -180,7 +180,7 @@ void quadtree::buildTreeImage(Node* currentNode, PNG &quadPNG) { // (@todo Chang
 int quadtree::binarySearch(int tol, int target) {
     int curr = tol;
     int numLeaves = pruneSize(curr);
-    while (numLeaves > target) {
+    while (numLeaves >= target) {
         std::cout << "second while loop:  " << numLeaves << std::endl;
         curr++;
         numLeaves = pruneSize(curr);
@@ -194,6 +194,12 @@ int quadtree::idealPrune(int leaves){
         return binarySearch(1, leaves);
         // prune size & binary search
         // give sample tolerance -> 1, change it with binary search
+		// Lower bound starts at one
+		// local var tol at 1
+		// while loop : while prunesize > leaves
+		// multiply by 2
+		// after: variable over two and the variable itself as the upper bound
+		// low, high, target
 }
 
 int quadtree::countPrune(Node* node, int tol) {
@@ -286,7 +292,8 @@ void quadtree::pruneTree(int tol, Node* node) {
 // as an argument accepting alternative. Will speak to TA. 
 void quadtree::clear() {
 
-	clearNode(root); 	
+	clearNode(root);
+	root = NULL; 	
 /* your code here */
 }
 
@@ -294,10 +301,9 @@ void quadtree::clear() {
 // Originally made as a helper function, it became the main 
 // clear function. this is because clear needs to be recursive, and needs to be able to call 
 // on a specific node indicated in pruneTree. 
-void quadtree::clearNode(Node* node) {
+void quadtree::clearNode(Node*& node) {
 
 	if (node == NULL) {
-
 		return;
 	}
 
@@ -312,6 +318,7 @@ void quadtree::clearNode(Node* node) {
 		node -> SW = NULL;
 		node -> SE = NULL;
 		delete node;
+		node = NULL;
 	}
 
 }
@@ -331,11 +338,6 @@ quadtree::Node * quadtree::copyHelper(Node * node) {
 
 void quadtree::copy(const quadtree & orig){
 	root = copyHelper(orig.root);
-	//root = new Node(orig.root->upLeft, orig.root->dim, orig.root->avg, orig.root->var);
-	//root->NW = copyHelper(orig.root->NW);
-	//root->NE = copyHelper(orig.root->NE);
-	//root->SE = copyHelper(orig.root->SE);
-	//root->SW = copyHelper(orig.root->SW);
 	edge = orig.edge;
 }
 

@@ -1,6 +1,7 @@
 #include "qtcount.h"
 
 bool qtcount::prunable(Node * root, int tol) {
+    
     RGBAPixel avg = root->avg; 
     int area = pow(2,root->dim)*pow(2,root->dim);
     int count = helper(root, tol, avg);
@@ -8,6 +9,7 @@ bool qtcount::prunable(Node * root, int tol) {
 }
 
 int qtcount::helper(Node * root, int tol, RGBAPixel avg) {
+    
     if (root->NE == NULL) {
         int sqDist = pow(root->avg.r - avg.r, 2) + pow(root->avg.g - avg.g, 2) + pow(root->avg.b - avg.b, 2);
         if (sqDist <= tol) {

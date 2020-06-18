@@ -192,9 +192,9 @@ private:
    void clear();
 
    // recursive helper function of clear(); 
-   void clearNode(Node* node);
+   void clearNode(Node*& node);
 
-   Node * copyHelper(Node * node);
+   Node * copyHelper(Node* node);
 
    /**
     * Complete for pa3
