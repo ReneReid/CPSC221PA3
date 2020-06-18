@@ -155,7 +155,7 @@ public:
     */
    int pruneSize(int tol);
 
-   int binarySearch(int tol, int target);
+   int binarySearch(int tol, int target, int alpha);
 
    /*
     * The idealPrune function can be considered to be the inverse
