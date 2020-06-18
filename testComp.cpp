@@ -143,54 +143,54 @@ TEST_CASE("qtcount::basic pruneSize","[weight=1][part=qtcount]"){
     REQUIRE(expected==result);
 }
 
-// TEST_CASE("qtcount::basic idealPrune","[weight=1][part=qtcount]"){
-//     PNG img;
-//     img.readFromFile("images/orig/adasquare.png");
+TEST_CASE("qtcount::basic idealPrune","[weight=1][part=qtcount]"){
+    PNG img;
+    img.readFromFile("images/orig/adasquare.png");
     
-//     qtcount t1(img); 
-//     int result = t1.idealPrune(13904);
+    qtcount t1(img); 
+    int result = t1.idealPrune(13904);
 
-//     int expected = 1366;
+    int expected = 1366;
 
-//     REQUIRE(expected==result);
-// }
+    REQUIRE(expected==result);
+}
 
-// TEST_CASE("qtvar::basic prune","[weight=1][part=qtvar]"){
-//     PNG img;
-//     img.readFromFile("images/orig/adasquare.png");
+TEST_CASE("qtvar::basic prune","[weight=1][part=qtvar]"){
+    PNG img;
+    img.readFromFile("images/orig/adasquare.png");
     
-//     qtvar t1(img); 
-//     t1.prune(3000);
-//     PNG result = t1.render();
+    qtvar t1(img); 
+    t1.prune(3000);
+    PNG result = t1.render();
 
-//     //result.writeToFile("images/soln/given-adaPrune-var.png");
+    //result.writeToFile("images/soln/given-adaPrune-var.png");
 
-//     PNG expected; 
-//     expected.readFromFile("images/soln/given-adaPrune-var.png");
+    PNG expected; 
+    expected.readFromFile("images/soln/given-adaPrune-var.png");
 
-//     REQUIRE(expected==result);
-// }
+    REQUIRE(expected==result);
+}
 
-// TEST_CASE("qtvar::basic pruneSize","[weight=1][part=qtvar]"){
-//     PNG img;
-//     img.readFromFile("images/orig/adasquare.png");
+TEST_CASE("qtvar::basic pruneSize","[weight=1][part=qtvar]"){
+    PNG img;
+    img.readFromFile("images/orig/adasquare.png");
     
-//     qtvar t1(img); 
-//     int result = t1.pruneSize(3000);
+    qtvar t1(img); 
+    int result = t1.pruneSize(3000);
 
-//     int expected = 15547;
+    int expected = 15547;
 
-//     REQUIRE(expected==result);
-// }
+    REQUIRE(expected==result);
+}
 
-// TEST_CASE("qtvar::basic idealPrune","[weight=1][part=qtvar]"){
-//     PNG img;
-//     img.readFromFile("images/orig/adasquare.png");
+TEST_CASE("qtvar::basic idealPrune","[weight=1][part=qtvar]"){
+    PNG img;
+    img.readFromFile("images/orig/adasquare.png");
     
-//     qtvar t1(img); 
-//     int result = t1.idealPrune(13904);
+    qtvar t1(img); 
+    int result = t1.idealPrune(13904);
 
-//     int expected = 3866;
+    int expected = 3866;
 
-//     REQUIRE(expected==result);
-// }
+    REQUIRE(expected==result);
+}
