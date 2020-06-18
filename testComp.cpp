@@ -131,17 +131,17 @@ TEST_CASE("qtcount::basic prune","[weight=1][part=qtcount]"){
     REQUIRE(expected==result);
 }
 
-// TEST_CASE("qtcount::basic pruneSize","[weight=1][part=qtcount]"){
-//     PNG img;
-//     img.readFromFile("images/orig/adasquare.png");
+TEST_CASE("qtcount::basic pruneSize","[weight=1][part=qtcount]"){
+    PNG img;
+    img.readFromFile("images/orig/adasquare.png");
     
-//     qtcount t1(img); 
-//     int result = t1.pruneSize(3000);
+    qtcount t1(img); 
+    int result = t1.pruneSize(3000);
 
-//     int expected = 9394;
+    int expected = 9394;
 
-//     REQUIRE(expected==result);
-// }
+    REQUIRE(expected==result);
+}
 
 // TEST_CASE("qtcount::basic idealPrune","[weight=1][part=qtcount]"){
 //     PNG img;

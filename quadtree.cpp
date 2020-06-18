@@ -194,9 +194,14 @@ int quadtree::idealPrune(int leaves){
 }
 
 int quadtree::countPrune(Node* node, int tol) {
-	if (node == NULL || !prunable(node, tol)) return 0;
+	if (node == NULL) {
+
+		return 0;
+	}
+	
+	if (node != NULL && prunable(node, tol)) return 1;
 	// refactor
-	int rsf = 1;
+	int rsf = 0;
 	rsf += countPrune(node->NE, tol);
 	rsf += countPrune(node->NW, tol);
 	rsf += countPrune(node->SE, tol);
@@ -207,7 +212,7 @@ int quadtree::countPrune(Node* node, int tol) {
 
 int quadtree::pruneSize(int tol){
         /* Your code here! */
-		if (root != NULL && prunable(root, tol)) {
+		if (root != NULL) {
 			return countPrune(root, tol);
 		}
 		return 0;
