@@ -114,8 +114,9 @@ PNG quadtree::render() {
 	// this helper will go through the tree, and pull pixel from those nodes that are = leaf
 	// and continue drilling for those nodes that have children. 
 	// PNG is the return type for buildTreeImage. 
-	static PNG* quadPNG = new PNG(edge, edge);
-	return buildTreeImage(root, quadPNG); 
+	static PNG quadPNG(edge, edge);
+	buildTreeImage(root, quadPNG); 
+	return quadPNG;
 }
 
 
@@ -126,7 +127,7 @@ PNG quadtree::render() {
 	// referred PA1 for guidance re render (specifically PNG files, block).
 	// created new PNG files within this assignment folder
 
-PNG quadtree::buildTreeImage(Node* currentNode, PNG* quadPNG) {
+void quadtree::buildTreeImage(Node* currentNode, PNG &quadPNG) { // (@todo Change in h)
 
 	// step 1: create new square shaped PNG (blank canvas), of length and width edge == 2^dim.
 	// "edge" represents the maximum square can be extracted from the image. 
@@ -153,11 +154,11 @@ PNG quadtree::buildTreeImage(Node* currentNode, PNG* quadPNG) {
 		for (int y = startY; y < endY; y++) {
 			for (int x = startX; x < endX; x++) {
 
-				RGBAPixel *pixel = quadPNG->getPixel(x, y); 
+				RGBAPixel *pixel = quadPNG.getPixel(x, y); 
 				*pixel = currentNode->avg;
 			}
 		}
-		return *quadPNG;
+		//return *quadPNG;
 	} else {
 
 	// recursive case: current node has children; call renderTree on each child. 
@@ -171,7 +172,7 @@ PNG quadtree::buildTreeImage(Node* currentNode, PNG* quadPNG) {
 	buildTreeImage(currentNode -> SW, quadPNG); 
 	buildTreeImage(currentNode -> SE, quadPNG); 
 	
-	return *quadPNG;
+	//return *quadPNG;
 	}
 
 }
@@ -321,11 +322,12 @@ quadtree::Node * quadtree::copyHelper(Node * node) {
 }
 
 void quadtree::copy(const quadtree & orig){
-	root = new Node(orig.root->upLeft, orig.root->dim, orig.root->avg, orig.root->var);
-	root->NW = copyHelper(orig.root->NW);
-	root->NE = copyHelper(orig.root->NE);
-	root->SE = copyHelper(orig.root->SE);
-	root->SW = copyHelper(orig.root->SW);
+	root = copyHelper(orig.root);
+	//root = new Node(orig.root->upLeft, orig.root->dim, orig.root->avg, orig.root->var);
+	//root->NW = copyHelper(orig.root->NW);
+	//root->NE = copyHelper(orig.root->NE);
+	//root->SE = copyHelper(orig.root->SE);
+	//root->SW = copyHelper(orig.root->SW);
 	edge = orig.edge;
 }
 

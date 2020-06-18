@@ -37,7 +37,7 @@ stats::stats(PNG & im){
 
                 if (x == 0) {
                     //std::cout << sumRed.capacity() << std::endl;
-                    sumRed[y][x] = (pixel->r);
+                    sumRed[y][x] = (pixel -> r);
                     //std::cout << "SumRed at (0,0): " << sumRed[y][x] << std::endl;
                     sumGreen[y][x] = (pixel -> g); 
                     //std::cout << "SumGreen at (0,0): " << sumGreen[y][x] << std::endl;
@@ -84,9 +84,9 @@ stats::stats(PNG & im){
 
                 sumRed[y][x] = sumRed[y-1][x] + sumRed[y][x-1] - sumRed[y-1][x-1] + (pixel -> r);
                 //std::cout << "SumRed at (1,1): " << sumRed[y][x] << std::endl;
-                sumGreen[y][x] = sumGreen[y-1][x] + sumGreen[y][x-1] + sumGreen[y-1][x-1] + (pixel -> g);
+                sumGreen[y][x] = sumGreen[y-1][x] + sumGreen[y][x-1] - sumGreen[y-1][x-1] + (pixel -> g);
                 //std::cout << "SumGreen at (1,1): " << sumGreen[y][x] << std::endl;
-                sumBlue[y][x] = sumBlue[y-1][x] + sumBlue[y][x-1] + sumBlue[y-1][x-1] + (pixel -> b);
+                sumBlue[y][x] = sumBlue[y-1][x] + sumBlue[y][x-1] - sumBlue[y-1][x-1] + (pixel -> b);
                 //std::cout << "SumBlue at (1,1): " << sumBlue[y][x] << std::endl;
                 sumsqRed[y][x] = sumsqRed[y-1][x] + sumsqRed[y][x-1] - sumsqRed[y-1][x-1] + pow((pixel -> r), 2); 
                 sumsqGreen[y][x] = sumsqGreen[y-1][x] + sumsqGreen[y][x-1] - sumsqGreen[y-1][x-1] + pow((pixel -> g), 2);
@@ -115,20 +115,20 @@ long stats::getSum(char channel, pair<int,int> ul, int dim){
         if (channel == 'r') {
             
             sum = sumRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
-            std::cout << "RR says GetSumRed at (1,1): " << sum << std::endl;
+            //std::cout << "RR says GetSumRed at (1,1): " << sum << std::endl;
         }
 
         if (channel == 'g') {
 
             sum = sumGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
-            std::cout << "RR says GetSumGreen at (1,1): " << sum << std::endl;
+            //std::cout << "RR says GetSumGreen at (1,1): " << sum << std::endl;
 
         }
 
         if (channel == 'b') {
 
             sum = sumBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
-            std::cout << "RR says GetSumBlue at (1,1): " << sum << std::endl;
+            //std::cout << "RR says GetSumBlue at (1,1): " << sum << std::endl;
 
         }
 
@@ -228,20 +228,20 @@ long stats::getSumSq(char channel, pair<int,int> ul, int dim){
         if (channel == 'r') {
             
             sumSq = sumsqRed[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
-            std::cout << "Rene Says: SumSqRed at (1,1) line 232: " << sumSq << std::endl;
+            //std::cout << "Rene Says: SumSqRed at (1,1) line 232: " << sumSq << std::endl;
         }
 
         if (channel == 'g') {
 
             sumSq = sumsqGreen[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
-            std::cout << "Rene Says: SumSqGreen at (1,1) line 238: " << sumSq << std::endl;
+            //std::cout << "Rene Says: SumSqGreen at (1,1) line 238: " << sumSq << std::endl;
 
         }
 
         if (channel == 'b') {
 
             sumSq = sumsqBlue[ul.second + pow(2, dim) - 1][ul.first + pow(2, dim) - 1];
-            std::cout << "Rene Says: SumSqBlue at (1,1) line 245: " << sumSq << std::endl;
+            //std::cout << "Rene Says: SumSqBlue at (1,1) line 245: " << sumSq << std::endl;
 
         }
 

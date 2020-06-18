@@ -130,7 +130,7 @@ public:
     */
    PNG render();
 
-   PNG buildTreeImage(Node* currentNode, PNG* quadPNG); 
+   void buildTreeImage(Node* currentNode, PNG& quadPNG); 
 
 
    /*
