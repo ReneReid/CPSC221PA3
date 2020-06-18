@@ -138,8 +138,8 @@ void quadtree::buildTreeImage(Node* currentNode, PNG &quadPNG) { // (@todo Chang
 	// base case: the current node has no children;
 	// this means that we are at a leaf
 	// PNG pixels will be rendered from parameter (average pixel) contained within leaf node 
-	//std::cout << currentNode->upLeft.first << " ";
-	//std::cout << currentNode->upLeft.second << std::endl;
+
+
 	if (currentNode -> NW == NULL) {
 		pair<int, int> ul = currentNode->upLeft;
 		int dim = currentNode->dim; 
@@ -181,7 +181,6 @@ int quadtree::binarySearch(int tol, int target, int delta) {
     int curr = tol;
     int numLeaves = pruneSize(curr);
     while (numLeaves > target) {
-        std::cout << "incrementing tolerance by:  " << delta << " number of leaves: " << numLeaves << std::endl;
         curr += delta;
         numLeaves = pruneSize(curr);
         if (numLeaves < target) {
@@ -193,7 +192,6 @@ int quadtree::binarySearch(int tol, int target, int delta) {
         }
     }
     while (numLeaves < target) {
-        std::cout << "decrementing tolerance by: " << delta << " number of leaves: " << numLeaves << std::endl;
         curr += delta;
         numLeaves = pruneSize(curr);
         if (numLeaves > target) {
@@ -211,14 +209,6 @@ int quadtree::binarySearch(int tol, int target, int delta) {
 int quadtree::idealPrune(int leaves){
  
         return binarySearch(1, leaves, 50) + 1;
-        // prune size & binary search
-        // give sample tolerance -> 1, change it with binary search
-		// Lower bound starts at one
-		// local var tol at 1
-		// while loop : while prunesize > leaves
-		// multiply by 2
-		// after: variable over two and the variable itself as the upper bound
-		// low, high, target
 }
 
 int quadtree::countPrune(Node* node, int tol) {
