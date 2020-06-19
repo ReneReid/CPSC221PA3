@@ -177,38 +177,24 @@ void quadtree::buildTreeImage(Node* currentNode, PNG &quadPNG) { // (@todo Chang
 
 }
 
-int quadtree::binarySearch(int tol, int target, int delta) {
-    int curr = tol;
-    int numLeaves = pruneSize(curr);
-    while (numLeaves > target) {
-        curr += delta;
-        numLeaves = pruneSize(curr);
-        if (numLeaves < target) {
-            delta *=(-0.5);
-            if (delta == 0) {
-                return curr;
-            }
-            return binarySearch(curr, target, delta);
-        }
-    }
-    while (numLeaves < target) {
-        curr += delta;
-        numLeaves = pruneSize(curr);
-        if (numLeaves > target) {
-            delta *=(-0.5);
-            if (delta == 0) {
-                return curr;
-            }
-            return binarySearch(curr, target, delta);
-        }
-    }
-    return curr;
+int quadtree::binarySearch(int min, int max, int leaves) {
+	if (min >= max) return max;
+    int mid = (min + max) / 2;
+	if (pruneSize(mid) == leaves) return mid;
+	if (pruneSize(mid) > leaves) {
+		return binarySearch(mid + 1, max, leaves);
+	}
+	return binarySearch(min, mid - 1, leaves);
 }
  
  
 int quadtree::idealPrune(int leaves){
+	int tol = 1;
+	while (pruneSize(tol) > leaves) {
+		tol *= 2;
+	} 
  
-        return binarySearch(1, leaves, 50) + 1;
+    return binarySearch(tol / 2, tol, leaves);
 }
 
 int quadtree::countPrune(Node* node, int tol) {
