@@ -178,13 +178,13 @@ void quadtree::buildTreeImage(Node* currentNode, PNG &quadPNG) { // (@todo Chang
 }
 
 int quadtree::binarySearch(int min, int max, int leaves) {
-	if (min >= max) return max;
+	if (min >= max) return min;
     int mid = (min + max) / 2;
-	if (pruneSize(mid) == leaves) return mid;
+	//if (pruneSize(mid) == leaves) return mid;
 	if (pruneSize(mid) > leaves) {
 		return binarySearch(mid + 1, max, leaves);
 	}
-	return binarySearch(min, mid - 1, leaves);
+	return binarySearch(min, mid, leaves);
 }
  
  
